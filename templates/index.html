@@ -1,0 +1,220 @@
+{% include 'admin-layout.html' %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+  </div>
+  
+  <!-- Content Row -->
+  <div class="row">
+    
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Sleep Hours</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">XX</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-calendar fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Disturbance</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">XXX</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Avg Sleep Time  </div>
+              <div class="row no-gutters align-items-center">
+                <div class="col-auto">
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                </div>
+                <div class="col">
+                  <div class="progress progress-sm mr-2">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Deep Sleep Time</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-comments fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Content Row -->
+  <div class="row card shadow mb-4">
+    <div class="col-x">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Start Recording</h6>
+      </div>
+      <div class="card-body">
+        <div class="d-flex">
+        <img class="align-self-start" src="static/img/undraw_sleep_analysis_o-5-f9.svg" height="500px">
+        <video class="align-self-end" id="video" style="display: none" width="480" height="360" autoplay></video></div>
+        <br><br>
+        
+        
+        
+          <a id="start-camera" href="javascript:void(0)" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+              <i id="sticon" class="fas fa-video"></i>
+            </span>
+            <span id="ctext" class="text">Start Recording</span>
+          </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  
+</div>
+
+</div>
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>Copyright &copy; SleepyOwl 2022</span>
+    </div>
+  </div>
+</footer>
+<!-- End of Footer -->
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+  <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Bootstrap core JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="static/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="static/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<!-- <script src="static/js/demo/chart-area-demo.js"></script> -->
+<script type="text/javascript">
+  let camera_button = document.querySelector("#start-camera");
+  let video = document.querySelector("#video");
+  let start_button = document.querySelector("#start-record");
+  let stop_button = document.querySelector("#stop-record");
+  let download_link = document.querySelector("#download-video");
+  
+  let camera_stream = null;
+  let media_recorder = null;
+  let blobs_recorded = [];
+  a =0;
+  camera_button.addEventListener('click', async function() {
+    
+    if (a ==0){
+      camera_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
+        window.localStream = stream;
+        video.srcObject = stream;
+      });
+      camera_button.className = "btn btn-danger btn-icon-split";
+      document.getElementById("ctext").innerHTML = "Stop Recording";
+      document.getElementById("sticon").className = "fas fa-video-slash";
+      video.style.display ="block"
+      video.style.cssText = "-moz-transform: scale(-1, 1); \
+-webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
+transform: scale(-1, 1); filter: FlipH;";
+      a=1
+    }
+    else{
+      localStream.getVideoTracks()[0].stop();
+      video.src = '';
+      camera_button.className = "btn btn-primary btn-icon-split";
+      document.getElementById("ctext").innerHTML = "Start Recording";
+      document.getElementById("sticon").className = "fas fa-video";
+      a=0;
+      video.style.display ="none"
+    }
+  });
+  
+  start_button.click('click', function() {
+    // set MIME type of recording as video/webm
+    media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
+    
+    // event : new recorded video blob available 
+    media_recorder.addEventListener('dataavailable', function(e) {
+      blobs_recorded.push(e.data);
+    });
+    
+    // event : recording stopped & all blobs sent
+    media_recorder.addEventListener('stop', function() {
+      // create local object URL from the recorded video blobs
+      let video_local = URL.createObjectURL(new Blob(blobs_recorded, { type: 'video/webm' }));
+      download_link.href = video_local;
+    });
+    
+    // start recording with each recorded blob having 1 second video
+    media_recorder.start(1000);
+  });
+  
+</script>
+
+</body>
+
+</html>
