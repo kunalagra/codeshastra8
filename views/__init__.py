@@ -1,7 +1,7 @@
 from cgitb import reset
 import re
 from urllib import response
-from flask import render_template, request, redirect, url_for, session
+from flask import render_template, request, redirect, url_for, session, Response
 from app import app
 from model import *
 
@@ -9,6 +9,7 @@ from model import *
 @app.route('/', methods=["GET"])
 def home():
     if "username" in session:
+        Camera().gen_frames()
         return render_template('index.html')
     else:
         return render_template('login.html')
@@ -69,6 +70,14 @@ def checkUserpassword():
 def logout():  # logout function
     session.pop('username', None)  # remove user session
     return redirect(url_for("home"))  # redirect to home page with message
+
+@app.route('/upload', methods=["POST"])
+def upload():
+    return video_p()
+
+# @app.route('/getFeed',methods=["GET"])
+# def getFeed():
+#     return Response(Camera().gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/forgot-password', methods=["GET"])

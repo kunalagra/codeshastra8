@@ -1,7 +1,6 @@
     $(document).ready(function(){
 		$('#username').keyup( function(e){
             var username = $('#username').val();
-            console.log(username)
             if(username != ''){
       
                $.ajax({

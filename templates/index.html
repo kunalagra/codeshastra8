@@ -98,27 +98,38 @@
       </div>
       <div class="card-body">
         <div class="d-flex">
-        <img class="align-self-start" src="static/img/undraw_sleep_analysis_o-5-f9.svg" height="500px">
-        <video class="align-self-end" id="video" style="display: none" width="480" height="360" autoplay></video></div>
-        <br><br>
-        
-        
-        
+          <img class="align-self-start" src="static/img/undraw_sleep_analysis_o-5-f9.svg" height="500px">
+          <video class="align-self-end" id="video" style="display: none" width="480" height="360" autoplay></video></div>
+          <br><br>
+          
+          
           <a id="start-camera" href="javascript:void(0)" class="btn btn-primary btn-icon-split">
             <span class="icon text-white-50">
               <i id="sticon" class="fas fa-video"></i>
             </span>
-            <span id="ctext" class="text">Start Recording</span>
+            <span id="ctext" class="text">Start Camera</span>
           </a>
-        
+          <a id="start-record" href="javascript:void(0)" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+              <i id="asticon" class="fas fa-video"></i>
+            </span>
+            <span id="actext" class="text">Start Recording</span>
+          </a>
+          <a id="stop-record" href="javascript:void(0)" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+              <i id="bsticon" class="fas fa-video"></i>
+            </span>
+            <span id="bctext" class="text">Stop Recording</span>
+          </a>
+          
+        </div>
       </div>
+      
     </div>
+    
     
   </div>
   
-  
-</div>
-
 </div>
 <footer class="sticky-footer bg-white">
   <div class="container my-auto">
@@ -165,7 +176,7 @@
   let camera_stream = null;
   let media_recorder = null;
   let blobs_recorded = [];
-  a =0;
+  a =0;    
   camera_button.addEventListener('click', async function() {
     
     if (a ==0){
@@ -178,8 +189,9 @@
       document.getElementById("sticon").className = "fas fa-video-slash";
       video.style.display ="block"
       video.style.cssText = "-moz-transform: scale(-1, 1); \
--webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
-transform: scale(-1, 1); filter: FlipH;";
+      -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
+      transform: scale(-1, 1); filter: FlipH;";
+      
       a=1
     }
     else{
@@ -193,28 +205,44 @@ transform: scale(-1, 1); filter: FlipH;";
     }
   });
   
-  start_button.click('click', function() {
-    // set MIME type of recording as video/webm
-    media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
-    
-    // event : new recorded video blob available 
+  start_button.addEventListener('click', function() {
+    media_recorder = new MediaRecorder(localStream, { mimeType: 'video/webm;codecs=h264' });
     media_recorder.addEventListener('dataavailable', function(e) {
       blobs_recorded.push(e.data);
     });
-    
-    // event : recording stopped & all blobs sent
+    console.log("Recording")
     media_recorder.addEventListener('stop', function() {
       // create local object URL from the recorded video blobs
-      let video_local = URL.createObjectURL(new Blob(blobs_recorded, { type: 'video/webm' }));
-      download_link.href = video_local;
+      let recording = new File(blobs_recorded, 'recording.webm', { type: 'video/webm;codecs=h264' });
+      
+      var form_data = new FormData();
+      form_data.append('file',recording)
+        $.ajax({
+            type: 'POST',
+            url: '/upload',
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                console.log('Success!');
+            },
+        });
+
+    });
+      media_recorder.start(1000);
     });
     
-    // start recording with each recorded blob having 1 second video
-    media_recorder.start(1000);
-  });
+    stop_button.addEventListener('click', function() {
+      media_recorder.stop();
+      //     let recording = new File(blobs_recorded, 'recording.webm', { type: 'video/webm' });
+      
+      
+    });
+    
+    
+  </script>
   
-</script>
-
 </body>
 
 </html>

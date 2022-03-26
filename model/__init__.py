@@ -2,11 +2,12 @@
 from helpers.mailer import *
 from helpers.hashpass import *
 from helpers.database import *
+from helpers.face_detection import faceDetection
 from app import app
-from flask import request, session
+from flask import request, session, Response
 import pandas as pd
 import json
-
+import cv2
 
 def checkloginusername():
     username = request.form["username"]
@@ -43,6 +44,13 @@ def getData():
     #Skip the heading
     ab = work.get_all_values()[1:]
     return ab
+def video_p():
+    isthisFile=request.files.get('file')
+    print(isthisFile)
+    print(isthisFile.filename)
+    isthisFile.save("./"+isthisFile.filename)
+    faceDetection()
+    return "0"
 
 def registerUser():
     fields = [k for k in request.form]
