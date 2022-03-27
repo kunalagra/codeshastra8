@@ -9,7 +9,6 @@ from model import *
 @app.route('/', methods=["GET"])
 def home():
     if "username" in session:
-        Camera().gen_frames()
         return render_template('index.html')
     else:
         return render_template('login.html')

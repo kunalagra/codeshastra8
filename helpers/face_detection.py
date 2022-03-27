@@ -8,24 +8,25 @@ from datetime import datetime
 from helpers.database import *
 from flask import session
 
+def timeStamp(x):
+        return datetime.timestamp(x)
+
 def faceDetection():
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
     eyes_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye_tree_eyeglasses.xml")
-    first_read = True
     mp_face_mesh = mp.solutions.face_mesh
     face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
-    cap = cv2.VideoCapture('./recording.webm')
-    classes = ["Left", "Right", "Front", "Down"]
+    cap = cv2.VideoCapture("./recording.webm")#'')
     head_position = [0, 0, 0, 0]
     head_distance_movement = []
-    total_frames = 0
     center_prev = (0, 0)
-    current = int(stime('%H'))*3600 + int(stime('%M'))*60 + float(stime('%S')+'.'+str(datetime.now().microsecond))
+    # current = int(stime('%H'))*3600 + int(stime('%M'))*60 + float(stime('%S')+'.'+str(datetime.now().microsecond))
+    current = timeStamp(datetime.now())
     temp = ""
     end_time = 0
     end_movement = ""
     listOfMvmt = []
-
+    temp_list = []
     while True:
         ret, frame = cap.read()
         if ret is False:
@@ -73,7 +74,9 @@ def faceDetection():
                         face_2d.append([x, y])
                         face_3d.append([x, y, lm.z])       
                 
-                ct = int(stime('%H'))*3600 + int(stime('%M'))*60 + float(stime('%S')+'.'+str(datetime.now().microsecond))
+                format_ct = stime('%H:%M:%S')+'.'+str(datetime.now().microsecond)
+                ct = timeStamp(datetime.now())
+                # ct = int(stime('%H'))*3600 + int(stime('%M'))*60 + float(stime('%S')+'.'+str(datetime.now().microsecond))
 
                 face_2d = np.array(face_2d, dtype=np.float64)
                 face_3d = np.array(face_3d, dtype=np.float64)
@@ -118,28 +121,31 @@ def faceDetection():
                 temp_time = ct-current
                 if temp==text:
                     temp_time += ct-current
-                    end_time = temp_time
                 else:
-                    listOfMvmt.append((text,abs(ct-current)))
-                    end_time = ct-current
+                    temp_list.append((text,abs(ct-current)))
+                    listOfMvmt.append((text,format_ct))
+                end_time = format_ct
                 temp = text
                 end_movement = text
 
 
         cv2.imshow('Head Pose Estimation', image)
         
-    # head_distance_movement.pop(0)
-    # head_position_hours = [x/3600 for x in head_position]
-    # head_distance_hours = [x/3600 for x in range(len(head_distance_movement))]
-
     # cap.release()
     # cv2.destroyAllWindows()
-
+    listOfMvmt.append((end_movement,end_time))
+    upper = [int(listOfMvmt[-1][1].split(':')[0])*3600, int(listOfMvmt[-1][1].split(':')[1])*60, float(listOfMvmt[-1][1].split(':')[2])]
+    lower = [int(listOfMvmt[-2][1].split(':')[0])*3600, int(listOfMvmt[-2][1].split(':')[1])*60, float(listOfMvmt[-2][1].split(':')[2])]
+    temp_list.append((end_movement,upper[0]-lower[0]+upper[1]-lower[1]+upper[2]-lower[2]))
+    temp_log = []
+    for i in range(len(temp_list)-1):
+        if i!=len(temp_list)-1:
+            temp_log.append([temp_list[i][1],temp_list[i+1][1],temp_list[i][0]]) # dataset
+    
     log = []
     for i in range(len(listOfMvmt)-1):
         if i!=len(listOfMvmt)-1:
-            log.append([listOfMvmt[i][1],listOfMvmt[i+1][1],listOfMvmt[i][0]])
-    work = studb.worksheet(session["username"])
+            log.append([listOfMvmt[i][1], listOfMvmt[i+1][1], listOfMvmt[i][0], abs(temp_log[i][1]-temp_log[i][0])]) # dataset
+    work = studb.worksheet('Owl')
     for x in log:
         work.append_row(x,value_input_option="USER_ENTERED")
-
