@@ -1,4 +1,4 @@
-# codeshastra8
+# CodeShastra8.0
 DJ Sanghvi's 24Hr Hackathon
 
 # Sleep Monitor Using Laptop Cam
