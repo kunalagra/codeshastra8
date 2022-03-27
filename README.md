@@ -22,7 +22,7 @@ USP's of our project -
 - Solve the customer's inconvenience of wearables and place devices
 
 Software used - 
--Pre trained Models
+- Pre trained Models
 - Flask, Cors
 - OpenCV
 
