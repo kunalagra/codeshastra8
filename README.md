@@ -2,7 +2,6 @@
 Sanghvi's 24Hr Hackathon
 
 Topic - Sleep Monitor Using Laptop Cam
-Developed by - Kunal Agrawal , Ganesh Utla, Deexith Madas & Aman Tiwari
 
 Features of our website are : - 
 - Record video using a webcam on a laptop covering the sleeping area of the individual 
@@ -30,3 +29,5 @@ Requirements of class -
 - Customer's Consent
 - Laptop with webcam
 - Sleeping area with beds and pillows for the test
+
+Developed by - Kunal Agrawal , Ganesh Utla, Deexith Madas & Aman Tiwari
