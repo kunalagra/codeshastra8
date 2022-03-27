@@ -18,6 +18,13 @@ def home():
 def sname():
     a =session["username"]
     return a
+@app.route('/getTSum', methods=["GET"])
+def timesum():
+    return getSymT()
+
+@app.route('/getpie', methods=["GET"])
+def getP():
+    return Gpie()
 
 @app.route('/register', methods=["GET", "POST"])
 def register():

@@ -11,9 +11,9 @@ $.ajax({
 		var myPieChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: response['Branch'],
+        labels: response['Start'],
         datasets: [{
-          data: response['Placed'],
+          data: response['Position'],
           backgroundColor: [
             "#25CCF7","#FD7272","#54a0ff","#00d2d3",
             "#1abc9c","#2ecc71","#3498db","#9b59b6","#16a085",

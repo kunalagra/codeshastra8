@@ -38,6 +38,18 @@ def checkusername():
         return "Available"
     else:
         return "Username taken"
+def Gpie():
+    work = studb.worksheet(session['username'])
+    data={
+    "Position":work.col_values(3),
+    "Start":work.col_values(1),
+    }
+    df = pd.DataFrame(data)
+    df=df[1:]
+    df['Start'] = df['Start'].str[:-6]
+
+    df_g=df.groupby('Start').count().reset_index()
+    return(df_g.to_dict('list'))
 
 def getData():
     work = studb.worksheet(session['username'])
@@ -46,11 +58,21 @@ def getData():
     return ab
 def video_p():
     isthisFile=request.files.get('file')
-    print(isthisFile)
-    print(isthisFile.filename)
     isthisFile.save("./"+isthisFile.filename)
     faceDetection()
     return "0"
+def getSymT():
+    work = studb.worksheet(session['username'])
+    data={
+    "Position":work.col_values(3),
+    "Difference":work.col_values(4),
+    }
+    df = pd.DataFrame(data)
+    df=df[1:]
+    df['Difference'] = pd.to_numeric(df['Difference'])
+
+    df_g=df.groupby('Position').sum().reset_index()
+    return df_g.to_dict('list')
 
 def registerUser():
     fields = [k for k in request.form]

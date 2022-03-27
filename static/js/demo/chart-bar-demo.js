@@ -30,28 +30,22 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 // Bar Chart Example
 var ctx = document.getElementById("myBarChart");
 $.ajax({
-	url: '/getyear',
+	url: '/getTSum',
 	type: 'GET',
 	success: function(response){
     var myBarChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: response['Graduation Year'],
+        labels: response['Position'],
         datasets: [
           {
-          label: "Yes",
+          label: "Difference",
           backgroundColor: "rgba(255, 99, 132, 0.2)",
           borderColor: "rgb(255, 99, 132)",
           borderWidth: 1,
-          data: response['Yes'],
+          data: response['Difference'],
         },
-        {
-          label: "No",
-          backgroundColor: 'rgba(255, 159, 64, 0.2)',
-          borderColor: 'rgb(255, 159, 64)',
-          borderWidth: 1,
-          data: response['No'],
-        }
+        
       ],
       },
       options: {
@@ -94,7 +88,7 @@ $.ajax({
           }],
         },
         legend: {
-          display: true
+          display: false
         },
         tooltips: {
           titleMarginBottom: 10,
@@ -110,7 +104,7 @@ $.ajax({
           callbacks: {
             label: function(tooltipItem, chart) {
               var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-              return datasetLabel + ": "+ number_format(tooltipItem.yLabel);
+              return datasetLabel + ": "+ number_format(tooltipItem.yLabel)+"s";
             }
           }
         },

@@ -17,6 +17,8 @@ def faceDetection():
     mp_face_mesh = mp.solutions.face_mesh
     face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
     cap = cv2.VideoCapture("./recording.webm")#'')
+    get_speed = cap.get(cv2.CAP_PROP_POS_FRAMES)
+    cap.set(cv2.CAP_PROP_POS_FRAMES,get_speed-1000)
     head_position = [0, 0, 0, 0]
     head_distance_movement = []
     center_prev = (0, 0)
@@ -146,6 +148,6 @@ def faceDetection():
     for i in range(len(listOfMvmt)-1):
         if i!=len(listOfMvmt)-1:
             log.append([listOfMvmt[i][1], listOfMvmt[i+1][1], listOfMvmt[i][0], abs(temp_log[i][1]-temp_log[i][0])]) # dataset
-    work = studb.worksheet('Owl')
+    work = studb.worksheet(session["username"])
     for x in log:
         work.append_row(x,value_input_option="USER_ENTERED")
