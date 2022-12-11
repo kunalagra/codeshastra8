@@ -7,3 +7,4 @@ numpy
 oauth2client
 opencv_python
 pandas
+gunicorn
