@@ -1,8 +1,8 @@
 <h1 align="center">
   <br>
-  <a href="https://sleep-tracking-cs8.onrender.com/"><img src="https://github.com/kunalagra/codeshastra8/blob/main/static/img/undraw_sleep_analysis_o-5-f9.svg" alt="Personalized Insurance Premium" width="200"></a>
+  <a href="https://sleep-tracking-cs8.onrender.com/"><img src="https://github.com/kunalagra/codeshastra8/blob/main/static/img/undraw_sleep_analysis_o-5-f9.svg" alt="Sleep Monitoring using WebCam" width="200"></a>
   <br>
-  Sleep Monitoring using Cam
+  Sleep Monitoring using WebCam
   <br>
 </h1>
 
